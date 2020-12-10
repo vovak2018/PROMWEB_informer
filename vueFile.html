@@ -1,0 +1,12 @@
+<div id="mainDiv"></div>
+<script>
+    function getUrlVar(key) {
+        var s = window.location.search;
+        s = s.match(new RegExp(key + '=([^&=]+)'));
+        return s ? s[1] : false;
+    };
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', getUrlVar("src"), false);
+    xhr.send();
+    mainDiv.innerHTML = xhr.responseText;
+</script>

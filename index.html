@@ -1,33 +1,26 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Informer</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-</head>
 
-<body>
 
   <div class="app" id="app">
     <div class="informer-container">
 
       <div class="temperature">
         <img src="img/thermometer.png">
-        <div class="temp-real">{{temperatureReal}}</div>
-        <div class="temp-feel">{{temperatureFeel}}</div>
+        <div class="temp-real" v-on:click="updRealTemp">{{temperatureReal}}</div>
+        <div class="temp-feel" v-on:click="updFeelTemp">{{temperatureFeel}}</div>
       </div>
 
       <div class="flex-break"></div>
 
-      <div class="humidity">
+      <div class="humidity" v-on:click="updHumid">
         <img src="img/humidity.png"> {{humidity}} <small>%</small>
       </div>
 
       <div class="vertical-divider"></div>
 
-      <div class="wind">
+      <div class="wind" v-on:click="updWind">
         <img src="img/wind.png"> {{wind}} <small>м/с</small>
       </div>
 
@@ -37,13 +30,58 @@
     var app = new Vue({
       el: '#app',
       data: {
-        temperatureReal: 1,
-        temperatureFeel: '-3.2',
-        humidity: 6,
-        wind: 20
+        temperatureReal: "0",
+        temperatureFeel: "0",
+        humidity: "0",
+        wind: "0"
+      },
+      mounted(){
+        this.render();
+        setInterval(this.render, 5000);
+      },
+      methods: {
+        render: function () {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/temp.php', false);
+          xhr.send();
+          this.temperatureReal = xhr.responseText;
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/feel.php', false);
+          xhr.send();
+          this.temperatureFeel = xhr.responseText;
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/humidity.php', false);
+          xhr.send();
+          this.humidity = Math.round(parseInt(xhr.responseText));
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/wind.php', false);
+          xhr.send();
+          this.wind = Math.round(parseInt(xhr.responseText));
+        },
+        updRealTemp: function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/temp.php', false);
+          xhr.send();
+          this.temperatureReal = xhr.responseText;
+        },
+        updFeelTemp: function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/feel.php', false);
+          xhr.send();
+          this.temperatureFeel = xhr.responseText;
+        },
+        updHumid: function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/humidity.php', false);
+          xhr.send();
+          this.humidity = Math.round(parseInt(xhr.responseText));
+        },
+        updWind: function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://37.77.104.246/api/weather/wind.php', false);
+          xhr.send();
+          this.wind = Math.round(parseInt(xhr.responseText));
+        }
       }
     })
   </script>
-</body>
-
-</html>
